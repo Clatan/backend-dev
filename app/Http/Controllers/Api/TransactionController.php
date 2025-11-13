@@ -12,11 +12,11 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
+            'product_id' => 'required|exists:products,id', //memastikan product_id ada di tabel products
+            'quantity' => 'required|integer|min:1', //memastikan quantity adalah integer dan minimal 1
         ]);
 
-        $product = Product::find($request->product_id);
+        $product = Product::find($request->product_id); 
 
         $totalPrice = $product->price_product * $request->quantity;
 
@@ -26,10 +26,11 @@ class TransactionController extends Controller
             'total_price' => $totalPrice,
         ]);
 
-        $product->decrement('stock_product', $request->quantity);
+        $product->decrement('stock_product', $request->quantity); //mengurangi stok produk
+        $product->validate(); //validasi stok tidak boleh negatif
 
         return response()->json([
-            'transaction' => $transaction,
+            'transactions' => $transaction,
             'message' => 'Transaction created successfully'
         ], 201);
     }

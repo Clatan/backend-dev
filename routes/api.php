@@ -7,4 +7,4 @@ use App\Http\Controllers\Api\TransactionController;
 
 Route::apiResource('products', ProductController::class);
 
-Route::post('transaction', [TransactionController::class, 'store']);
+Route::post('transactions', [TransactionController::class, 'store']);
